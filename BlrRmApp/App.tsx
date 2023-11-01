@@ -18,3 +18,5 @@ export default function App() {
     </NavigationContainer>
   )}
 
+//React Native Todo App with Firebase and <Expo>
+//18:22 
