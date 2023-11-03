@@ -18,7 +18,6 @@ const List = ({ navigation }: any) => {
       Location,
       Manufacturer,
       Quantity,
-      Out_of_Stock: false,
     });
 
     // Clear input fields after adding the part

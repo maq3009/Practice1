@@ -51,7 +51,12 @@ export default function App() {
         }}
          component={MainStack} />
         <Tab.Screen name="Chemicals" component={Chemicals} />
-        <Tab.Screen name="Inventory" component={Inventory} />
+        <Tab.Screen name="Inventory" component={Inventory} 
+          options={{
+            headerTitleAlign: "center",
+            headerTitleStyle: styles.BlackText,
+          }}
+        />
       </Tab.Navigator>
     </NavigationContainer>
   )
@@ -59,11 +64,15 @@ export default function App() {
 
   const styles = StyleSheet.create({
     headerTitleContainer: {
-      paddingBottom: 20, // Add a bottom padding of 18px
+      paddingBottom: 10, // Add a bottom padding of 18px
     },
     headerTitle: {
       fontSize: 28,
       fontWeight: 'bold' // Add a bottom padding of 18px
+    },
+    BlackText: {
+      fontSize: 30,
+      marginBottom: 15,
     },
     PageTitle: {
       fontSize: 28,
