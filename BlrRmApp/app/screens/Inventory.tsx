@@ -10,12 +10,31 @@ const Inventory = ({ route }: any) => {
     const Manufacturer = route.params?.Manufacturer || '';
     const Quantity = route.params?.Quantity || '';
 
-  const data = [
-    { label: 'Part Name', value: PartName },
-    { label: 'Part Number', value: PartNumber },
-    { label: 'Location', value: Location },
-    { label: 'Manufacturer', value: Manufacturer },
-    { label: 'Quantity', value: Quantity },
+  const data = [{ 
+        label: 'Part Name',
+        value: PartName, 
+        id: 1 
+    },
+    {
+        label: 'Part Number',
+        value: PartNumber,
+        id: 2
+    },
+    {
+        Label: 'Location',
+        value: Location,
+        id: 3
+    },
+    {
+        label: 'Manufacturer',
+        value: Manufacturer, 
+        id: 4 
+    },
+    {
+        label: 'Quantity',
+        value: Quantity,
+        id: 5
+    },
   ];
 
   return (
@@ -24,7 +43,7 @@ const Inventory = ({ route }: any) => {
 
       <FlatList
         data={data}
-        keyExtractor={(item) => item.label}
+        keyExtractor={(item) => [item.label, item.value]}
         renderItem={({ item }) => (
           <View style={styles.itemContainer}>
             <Text style={styles.label}>{item.label}:</Text>
@@ -50,8 +69,8 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: 5,
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
@@ -63,4 +82,8 @@ const styles = StyleSheet.create({
   value: {
     fontSize: 18,
   },
+  item: {
+    marginTop: 10,
+    padding: 20,
+  }
 });

@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, FlatList, Button, StyleSheet } from 'react-native';
 import { useState } from 'react';
 import { FIRESTORE_DB } from '../../firebaseConfig';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, getDocs, query } from 'firebase/firestore';
 
 const List = ({ navigation }: any) => {
   const [PartName, setPartName] = useState('');
