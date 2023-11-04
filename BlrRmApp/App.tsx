@@ -3,7 +3,7 @@ import List from './app/screens/List';
 import Details from './app/screens/Details';
 import Inventory from './app/screens/Inventory';
 import Chemicals from './app/screens/Chemicals';
-import Login_SignUp from './app/screens/Login_SignUp';
+import Login from './app/screens/Login_SignUp';
 import { StyleSheet } from 'react-native';
 import { View, Text} from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -15,27 +15,16 @@ const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator()
 
 
-const CustomHeaderTitle = () => {
-  return (
-    <View style={styles.headerTitleContainer}>
-      <Text style={styles.headerTitle}>ADD NEW PART</Text>
-    </View>
-  );
-};
-
-
 const MainStack = () => {
   return (
-      <Stack.Navigator>
-        <Stack.Screen name="ADD NEW PART" 
-        component={List}
+      <Stack.Navigator initialRouteName= 'Login'>
+        <Stack.Screen name="Login/SignUp" 
+        component={Login}
         options={{
           headerTitleAlign: 'center',
           headerStyle: {
             backgroundColor: '#787878',
           },
-
-          headerTitle: () => <CustomHeaderTitle />
         }}
       />
       </Stack.Navigator>
@@ -45,11 +34,20 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator>
-        <Tab.Screen name="Boiler Room App"
-         options={{
-          headerTitleAlign: 'center',
+        <Tab.Screen name='BOILER ROOM APP'
+          options={{
+            headerTitleAlign: 'center',
+            headerTitleStyle: {
+              fontWeight: '900',
+            }
         }}
          component={MainStack} />
+        <Tab.Screen name="Add Part" component={List} 
+          options={{
+            headerTitleAlign: "center",
+            headerTitleStyle: styles.BlackText,
+        }}
+        />
         <Tab.Screen name="Chemicals" component={Chemicals} />
         <Tab.Screen name="Inventory" component={Inventory} 
           options={{
@@ -83,4 +81,7 @@ export default function App() {
 
 
 //React Native Todo App with Firebase and <Expo>
-//18:22 
+//18:22 Simon Grimm
+//PR
+//6:01 / 22:28
+//Super Easy React Native AUTHENTICATION with Firebase 
