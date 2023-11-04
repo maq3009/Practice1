@@ -64,8 +64,14 @@ const Login = () => {
 
           { loading ? <ActivityIndicator size= "large" color= "#0000ff" />
           : <>
-            <Button title="Login" onPress={signIn} />
-            <Button title= "SignUp" onPress={signUp} />
+            <View style={styles.buttonContainer}>
+              <View style={styles.button}>
+                <Button title="Login" onPress={signIn} />
+              </View>
+              <View style={styles.button}>
+                <Button title= "SignUp" onPress={signUp} />
+              </View>
+            </View>
         </>}
 
       </View>
@@ -93,12 +99,21 @@ const styles = StyleSheet.create({
   boilerImage: {
     alignSelf: "center",
     marginTop: 20,
-    height: 100,
-    width: 250,
+    height: 180,
+    width: 450,
   },
   centeredContent: {
     flex: 0.7,
+    paddingHorizontal: 30,
     justifyContent: 'center',
 
+  },
+  buttonContainer: {
+    flexDirection: 'row', // Horizontal layout
+    justifyContent: 'space-around', // Space buttons evenly
+    marginTop: 30,
+  },
+  button: {
+    width: '49%', // Adjust the width as needed to fit both buttons
   },
 })
