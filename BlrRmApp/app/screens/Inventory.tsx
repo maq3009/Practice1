@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   card: {
-    width: 400,
+    width: 300,
     margin: 10,
     backgroundColor: '#ADD8E6',
   },

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "626595907158",
+    "project_id": "boilerinventory",
+    "storage_bucket": "boilerinventory.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:626595907158:android:b43b6410e201ceb6a45df7",
+        "android_client_info": {
+          "package_name": "com.anonymous.BlrRmApp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbRSWaSf73q_HFbDfF1n6g_j1KQgqDbvg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

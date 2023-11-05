@@ -42,7 +42,7 @@ export default function App() {
             }
         }}
          component={MainStack} />
-        <Tab.Screen name="Add Part" component={List} 
+        <Tab.Screen name="Add New Part" component={List} 
           options={{
             headerTitleAlign: "center",
             headerTitleStyle: styles.BlackText,
@@ -59,7 +59,6 @@ export default function App() {
     </NavigationContainer>
   )
 }
-
   const styles = StyleSheet.create({
     headerTitleContainer: {
       paddingBottom: 10, // Add a bottom padding of 18px

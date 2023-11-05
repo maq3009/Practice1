@@ -7,6 +7,16 @@ import { color } from 'react-native-elements/dist/helpers';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { ActivityIndicator } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
+import { Auth, UserCredential } from 'firebase/auth';
+import { StackNavigationProp } from '@react-navigation/stack';
+
+type StackParamList = {
+  Login: undefined;
+  List: undefined ;
+}
+
+type LoginScreenNavigationProp = StackNavigationProp<StackParamList, 'Login'>;
 
 
 const Login = () => {
@@ -14,12 +24,13 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const auth = FIREBASE_AUTH;
+  const navigation = useNavigation<LoginScreenNavigationProp>();
   
   const signIn = async () => {
     setLoading(true);
     try {
-      const response = await signInWithEmailAndPassword(auth, email, password);
-      console.log(response);
+      const response: UserCredential = await signInWithEmailAndPassword(auth, email, password);
+      navigation.navigate('Add New Part');
     } catch (error: any) {
       console.log(error);
       alert('Sign in failed: ' + error.message);
@@ -99,8 +110,8 @@ const styles = StyleSheet.create({
   boilerImage: {
     alignSelf: "center",
     marginTop: 20,
-    height: 180,
-    width: 450,
+    height: 120,
+    width: 300,
   },
   centeredContent: {
     flex: 0.7,
