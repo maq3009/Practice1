@@ -62,9 +62,12 @@ const List = ({ navigation }: any) => {
           onChangeText={(text: string) => setQuantity(text)}
           value={Quantity}
         />
-        <Button onPress={addPart} title="Add Part" />
+
+      </View>        
+      <View style={styles.addPartButton}>
+          <Button onPress={addPart} title="Add Part" />
       </View>
-      <Button
+      {/* <Button
         title="Go to Inventory"
         onPress={() => {
           // Pass the input values to the Inventory screen using params
@@ -76,7 +79,7 @@ const List = ({ navigation }: any) => {
             Quantity,
           });
         }}
-      />
+      /> */}
     </View>
   );
 };
@@ -95,4 +98,9 @@ const styles = StyleSheet.create({
     padding: 20,
     borderBottomWidth: 1,
   },
+  addPartButton: {
+    display: 'flex',
+    
+    padding: 20
+  }
 });

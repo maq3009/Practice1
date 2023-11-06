@@ -11,6 +11,7 @@ import {
 } from 'firebase/firestore';
 import { Card, Button } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
+import { white } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 
 
 
@@ -130,13 +131,19 @@ const Chemicals: React.FC = () => {
             <Card.Content>
               <Text style={styles.label}>{item.name}</Text>
               <Card.Actions style={styles.buttonContainer}>
-                <TouchableOpacity onPress={() => decrementQuantity(item.id)}>
-                  <Text style={styles.quantityButton}>-</Text>
-                </TouchableOpacity>
-                <Text style={styles.quantity}>{item.quantity}</Text>
-                <TouchableOpacity onPress={() => incrementQuantity(item.id)}>
-                  <Text style={styles.quantityButton}>+</Text>
-                </TouchableOpacity>
+                <View style={styles.quantityContainer}>
+                  <TouchableOpacity 
+                      style={styles.button}
+                      onPress={() => decrementQuantity(item.id)}>
+                    <Text style={styles.quantityButton}>-</Text>
+                  </TouchableOpacity>
+                  <Text style={styles.quantity}>{item.quantity}</Text>
+                  <TouchableOpacity 
+                      style={styles.button}
+                      onPress={() => incrementQuantity(item.id)}>
+                    <Text style={styles.quantityButton}>+</Text>
+                  </TouchableOpacity>
+                </View>
               </Card.Actions>
             </Card.Content>
             <Card.Actions>
@@ -178,6 +185,7 @@ const styles = StyleSheet.create({
     width: 100,
   },
   label: {
+    
     fontSize: 18,
     fontWeight: 'bold',
   },
@@ -186,12 +194,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  quantityContainer: {
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   quantityButton: {
     fontSize: 24,
     fontWeight: 'bold',
+    marginHorizontal: 20,
+    borderRadius: 10,
+    color: 'white',
   },
   quantity: {
     fontSize: 18,
+    padding: 8,
+  },
+  button: {
+    backgroundColor: 'blue', // Customize the button color
+    borderRadius: 20, // Adjust the border radius as needed
+    padding: 0 // Add padding to space the text inside the button
   },
   imageContainer: {
     flex: 1,

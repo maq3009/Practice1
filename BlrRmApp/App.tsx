@@ -9,7 +9,7 @@ import { View, Text} from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { color } from 'react-native-elements/dist/helpers';
-
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator()
@@ -34,25 +34,42 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator>
-        <Tab.Screen name='BOILER ROOM APP'
+        <Tab.Screen name='Home'
           options={{
             headerTitleAlign: 'center',
             headerTitleStyle: {
               fontWeight: '900',
-            }
+            },
+            tabBarIcon: ({ color, size }) => (
+              <Icon name="home" color={color} size={size} />
+            )
         }}
          component={MainStack} />
         <Tab.Screen name="Add New Part" component={List} 
           options={{
             headerTitleAlign: "center",
             headerTitleStyle: styles.BlackText,
+            tabBarIcon: ({ color, size }) => (
+              <Icon name="add" color={color} size={size} />
+            )
         }}
         />
-        <Tab.Screen name="Chemicals" component={Chemicals} />
+        <Tab.Screen name="Chemicals" component={Chemicals} 
+          options={{
+            headerTitleAlign: "center",
+            headerTitleStyle: styles.BlackText,
+            tabBarIcon: ({ color, size }) => (
+              <Icon name="science" color={color} size={size} />
+            )
+          }}
+        />
         <Tab.Screen name="Inventory" component={Inventory} 
           options={{
             headerTitleAlign: "center",
             headerTitleStyle: styles.BlackText,
+            tabBarIcon: ({ color, size }) => (
+              <Icon name="inventory" color={'green'} size={size} />
+            )
           }}
         />
       </Tab.Navigator>
