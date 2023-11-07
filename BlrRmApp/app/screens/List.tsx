@@ -4,18 +4,22 @@ import { useState } from 'react';
 import { FIRESTORE_DB } from '../../firebaseConfig';
 import { addDoc, collection, getDocs, query } from 'firebase/firestore';
 
+
+
 const List = ({ navigation }: any) => {
   const [PartName, setPartName] = useState('');
   const [PartNumber, setPartNumber] = useState('');
   const [Location, setLocation] = useState('');
   const [Manufacturer, setManufacturer] = useState('');
   const [Quantity, setQuantity] = useState('');
+  
 
   const addPart = async () => {
     const doc = await addDoc(collection(FIRESTORE_DB, 'Inventory'), {
       PartName,
       PartNumber,
       Location,
+      Image: 
       Manufacturer,
       Quantity,
     });
@@ -62,7 +66,6 @@ const List = ({ navigation }: any) => {
           onChangeText={(text: string) => setQuantity(text)}
           value={Quantity}
         />
-
       </View>        
       <View style={styles.addPartButton}>
           <Button onPress={addPart} title="Add Part" />

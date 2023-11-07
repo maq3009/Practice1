@@ -8,10 +8,14 @@ import { ScreenStackHeaderSearchBarView } from 'react-native-screens';
 import Search from '../../components/Search';
 import { StatusBar } from 'react-native';
 
+
 interface InventoryItem {
   id: string;
+  imagePath: string;
   [key: string]: any;
 }
+
+
 
 const Inventory: React.FC = () => {
   const [inventoryData, setInventoryData] = useState<InventoryItem[]>([]);
@@ -51,7 +55,7 @@ const Inventory: React.FC = () => {
               return null;
             })}
           </Card.Content>
-          <Image style={styles.cardImage} source={require('../../assets/icon.png')}></Image>
+          <Image style={styles.cardImage} source={require('../../assets/favicon.png')}></Image>
           <Card.Actions>
           </Card.Actions>
           <Button style={styles.detailsButton}
