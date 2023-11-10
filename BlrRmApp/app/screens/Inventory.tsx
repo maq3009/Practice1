@@ -11,8 +11,12 @@ import { StatusBar } from 'react-native';
 
 interface InventoryItem {
   id: string;
-  imagePath: string;
-  [key: string]: any;
+  PartName: string;
+  PartNumber: string;
+  Location: string;
+  Manufacturer: string;
+  Quantity: string;
+  Image: string;
 }
 
 
@@ -43,7 +47,7 @@ const Inventory: React.FC = () => {
         <Card key={item.id} style={styles.card}>
           <Card.Content>
             {Object.keys(item).map((key) => {
-              if (key !== 'id') {
+              if (key !== 'id' && key !== 'Image') {
                 return (
                  
                     <View key={key} style={styles.fieldContainer}>
@@ -55,7 +59,7 @@ const Inventory: React.FC = () => {
               return null;
             })}
           </Card.Content>
-          <Image style={styles.cardImage} source={require('../../assets/favicon.png')}></Image>
+          <Image style={styles.cardImage} source={{ uri: item.Image }} />
           <Card.Actions>
           </Card.Actions>
           <Button style={styles.detailsButton}

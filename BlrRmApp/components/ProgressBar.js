@@ -10,6 +10,7 @@ export default function ProgressBar({ progress }) {
     return (
         <View>
             <Rect width={barWidth} height={"100%"}/>
+            <Rect width={progressWidth} height={'100%'} fill={'#eee'}/>
         </View>
     )
 

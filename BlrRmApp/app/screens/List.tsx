@@ -3,6 +3,21 @@ import { View, Text, TextInput, FlatList, Button, StyleSheet } from 'react-nativ
 import { useState } from 'react';
 import { FIRESTORE_DB } from '../../firebaseConfig';
 import { addDoc, collection, getDocs, query } from 'firebase/firestore';
+import UploadComponent from './UploadComponent';
+import * as FileSystem from 'expo-file-system';
+import * as ImagePicker from 'expo-image-picker';
+
+
+const imgDir = FileSystem.documentDirectory + '../../assets';
+
+
+const ensureDirExists = async () => {
+  const dirInfo = await FileSystem.getInfoAsync(imgDir);
+  if (!dirInfo.exists) {
+    await FileSystem.makeDirectoryAsync(imgDir, { intermediates: true});
+  }
+};
+
 
 
 
@@ -12,16 +27,45 @@ const List = ({ navigation }: any) => {
   const [Location, setLocation] = useState('');
   const [Manufacturer, setManufacturer] = useState('');
   const [Quantity, setQuantity] = useState('');
-  
+  const [Image, setImage] = useState('');
+
+    const selectImage = async (useLibrary: boolean) => {
+      let result;
+
+      const options: ImagePicker.ImagePickerOptions = {
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.3,
+      }
+
+      if(useLibrary) {
+        result = await ImagePicker.launchImageLibraryAsync(options);
+      } else {
+        await ImagePicker.requestCameraPermissionsAsync();
+        result = await ImagePicker.launchCameraAsync({
+        });
+      }
+
+      if (!result.canceled) {
+        setImage(result.assets[0].uri);
+      }
+    }
+
+
+
+
 
   const addPart = async () => {
+    const filename = Image.split('/').pop();
+
     const doc = await addDoc(collection(FIRESTORE_DB, 'Inventory'), {
       PartName,
       PartNumber,
-      Location,
-      Image: 
+      Location, 
       Manufacturer,
       Quantity,
+      Image
     });
 
     // Clear input fields after adding the part
@@ -30,6 +74,7 @@ const List = ({ navigation }: any) => {
     setLocation('');
     setManufacturer('');
     setQuantity('');
+    setImage('');
   };
 
   return (
@@ -66,6 +111,9 @@ const List = ({ navigation }: any) => {
           onChangeText={(text: string) => setQuantity(text)}
           value={Quantity}
         />
+        <Button title='Photo Library' onPress={() => selectImage(true)}/>
+        <Button title='Capture Image' onPress={() => selectImage(false)}/>
+        {/* <UploadComponent setImage={setImage} /> */}
       </View>        
       <View style={styles.addPartButton}>
           <Button onPress={addPart} title="Add Part" />
@@ -103,7 +151,7 @@ const styles = StyleSheet.create({
   },
   addPartButton: {
     display: 'flex',
-    
+    marginTop: 50,
     padding: 20
   }
 });

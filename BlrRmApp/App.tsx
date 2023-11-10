@@ -11,9 +11,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { color } from 'react-native-elements/dist/helpers';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator()
-
 
 const MainStack = () => {
   return (
