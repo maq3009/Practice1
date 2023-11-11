@@ -23,7 +23,8 @@ interface InventoryItem {
 
 const Inventory: React.FC = () => {
   const [inventoryData, setInventoryData] = useState<InventoryItem[]>([]);
-
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  
   useEffect(() => {
     // Fetch data from Firestore and update the state
     const fetchData = async () => {
@@ -40,24 +41,33 @@ const Inventory: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.searchInputContainer}>
-        <Search/>
+        <Search setSearchTerm={setSearchTerm} />
       </View>
-      {inventoryData.map((item) => ( 
-      <TouchableOpacity style={styles.cardButton}>
-        <Card key={item.id} style={styles.card}>
-          <Card.Content>
-            {Object.keys(item).map((key) => {
-              if (key !== 'id' && key !== 'Image') {
-                return (
-                 
-                    <View key={key} style={styles.fieldContainer}>
-                      <Text style={styles.label}>{key}:</Text>
-                      <Text style={styles.value}>{item[key]}</Text>
-                  </View>
-                );
-              }
-              return null;
-            })}
+      <FlatList style={styles.flatList}
+        data={inventoryData.filter(
+          (item) =>
+          Object.values(item)
+            .join('')
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())
+            )}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <TouchableOpacity style={styles.cardButton}>
+                <Card key={item.id} style={styles.card}>
+                  <Card.Content>
+                    {Object.keys(item).map((key) => {
+                      if (key !== 'id' && key !== 'Image') {
+                        return (
+                        
+                            <View key={key} style={styles.fieldContainer}>
+                              <Text style={styles.label}>{key}:</Text>
+                              <Text style={styles.value}>{item[key]}</Text>
+                          </View>
+                        );
+                      }
+                      return null;
+                    })}
           </Card.Content>
           <Image style={styles.cardImage} source={{ uri: item.Image }} />
           <Card.Actions>
@@ -71,7 +81,8 @@ const Inventory: React.FC = () => {
           </Button>
         </Card>
       </TouchableOpacity>
-      ))}
+      )}
+      />
     </View>
   );
 };
@@ -89,6 +100,9 @@ const styles = StyleSheet.create({
   PageTitle: {
     fontSize: 28,
     justifyContent: 'center',
+  },
+  flatList: {
+    marginTop: 100,
   },
   itemContainer: {
     flexDirection: 'column',
