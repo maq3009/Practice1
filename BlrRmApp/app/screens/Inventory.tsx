@@ -81,8 +81,10 @@ const Inventory: React.FC = () => {
                       return null;
                     })}
           </Card.Content>
+        {item.Image && (
           <Image style={styles.cardImage} source={{ uri: item.Image }} />
-          <Card.Actions>
+        )}
+            <Card.Actions>
             <Button
               style={styles.removeButton}
               icon='delete'
@@ -91,6 +93,12 @@ const Inventory: React.FC = () => {
               Remove
             </Button>
           </Card.Actions>
+            <Button
+              style={styles.detailsButton}
+              icon='details'
+            >
+              Details
+            </Button>
         </Card>
       </TouchableOpacity>
       )}
@@ -172,10 +180,10 @@ const styles = StyleSheet.create({
   },
   detailsButton: {
     position: 'absolute',
-    bottom: -60,
-    left: '25%',
-    height: 50,
-    width: 200,
+    bottom: 10,
+    marginLeft: 20,
+    height: 41,
+    width: 100,
     justifyContent: 'center',
     backgroundColor: '#8d8d99',
   }
