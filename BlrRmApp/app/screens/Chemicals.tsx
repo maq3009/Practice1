@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { FIRESTORE_DB } from '../../firebaseConfig';
 import {
+  getDoc,
   getDocs,
   collection,
   DocumentData,
   QueryDocumentSnapshot,
   doc,
+  setDoc,
   updateDoc,
 } from 'firebase/firestore';
 import { Card, Button } from 'react-native-paper';
@@ -24,6 +26,24 @@ interface ChemicalItem {
 
 const Chemicals: React.FC = () => {
   const [chemicalsData, setChemicalsData] = useState<ChemicalItem[]>([]);
+
+  const addItemsToFirestore = async (items: ChemicalItem[]) => {
+    const batch: Promise<void>[] = [];
+    items.forEach(async (item) => {
+      const chemicalRef = doc(FIRESTORE_DB, 'Chemicals', item.id);
+      const docSnapshot = await getDoc(chemicalRef);
+
+      if (docSnapshot.exists()) {
+        batch.push(updateDoc(chemicalRef, { quantity: item.quantity }));
+      } else {
+        // Document doesn't exist, create it
+        batch.push(setDoc(chemicalRef, { ...item }));
+      }
+      });
+  
+    await Promise.all(batch);
+  };
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -95,8 +115,24 @@ const Chemicals: React.FC = () => {
         },
       ];
 
+      await addItemsToFirestore(hardcodedItems);
+
       // Combine Firestore data with hardcoded data
-      setChemicalsData([...data, ...hardcodedItems]);
+      const combinedData = data.map((firestoreItem) => {
+        const correspondingHardcodedItem = hardcodedItems.find(
+          (item) => item.id === firestoreItem.id
+        );
+  
+        // If item is present in hardcoded items, use it; otherwise, use the one from Firestore
+        return correspondingHardcodedItem
+          ? { ...correspondingHardcodedItem, ...firestoreItem }
+          : firestoreItem;
+      });
+
+
+      // Combine Firestore data with hardcoded data
+      setChemicalsData(combinedData);
+      await addItemsToFirestore(hardcodedItems);
     };
     fetchData();
   }, []);
@@ -106,6 +142,11 @@ const Chemicals: React.FC = () => {
     const chemical = chemicalsData.find((item) => item.id === id);
     if (chemical && chemical.quantity > 0) {
       await updateDoc(chemicalRef, { quantity: chemical.quantity - 1 });
+      setChemicalsData((prevData) =>
+      prevData.map((item) =>
+        item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+      )
+    );
     }
   };
 
@@ -114,6 +155,11 @@ const Chemicals: React.FC = () => {
     const chemical = chemicalsData.find((item) => item.id === id);
     if (chemical) {
       await updateDoc(chemicalRef, { quantity: chemical.quantity + 1 });
+      setChemicalsData((prevData) =>
+      prevData.map((item) =>
+        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+      )
+    );
     }
   };
 
