@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { FIRESTORE_DB } from '../../firebaseConfig'; // Make sure to provide the correct path to your firebaseConfig
-import { getDocs, collection, DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
+import { getDocs, deleteDoc, doc, collection, DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
 import { Card, Button } from 'react-native-paper';
 import { black } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 import { ScreenStackHeaderSearchBarView } from 'react-native-screens';
@@ -17,6 +17,7 @@ interface InventoryItem {
   Manufacturer: string;
   Quantity: string;
   Image: string;
+  onRemove: () => void;
 }
 
 
@@ -25,13 +26,24 @@ const Inventory: React.FC = () => {
   const [inventoryData, setInventoryData] = useState<InventoryItem[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
   
+
+  const removeItem = async (itemId: string) => {
+    await deleteDoc(doc(FIRESTORE_DB, 'Inventory', itemId));
+    setInventoryData((prevData) => prevData.filter((item) => item.id !== itemId));
+  };
+
+
+
   useEffect(() => {
     // Fetch data from Firestore and update the state
     const fetchData = async () => {
       const querySnapshot = await getDocs(collection(FIRESTORE_DB, 'Inventory'));
       const data: InventoryItem[] = [];
       querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
-        data.push({ id: doc.id, ...doc.data() });
+        data.push({
+           id: doc.id,
+           ...doc.data(),
+          onRemove: () => removeItem(doc.id), });
       });
       setInventoryData(data);
     };
@@ -57,7 +69,7 @@ const Inventory: React.FC = () => {
                 <Card key={item.id} style={styles.card}>
                   <Card.Content>
                     {Object.keys(item).map((key) => {
-                      if (key !== 'id' && key !== 'Image') {
+                      if (key !== 'id' && key !== 'Image' && key !== 'onRemove') {
                         return (
                         
                             <View key={key} style={styles.fieldContainer}>
@@ -71,14 +83,14 @@ const Inventory: React.FC = () => {
           </Card.Content>
           <Image style={styles.cardImage} source={{ uri: item.Image }} />
           <Card.Actions>
-          </Card.Actions>
-          <Button style={styles.detailsButton}
-              onPress={() => {
-              // Handle button press here, e.g., navigate to details screen
-              }}
+            <Button
+              style={styles.removeButton}
+              icon='delete'
+              onPress={item.onRemove}
             >
-              View Details
-          </Button>
+              Remove
+            </Button>
+          </Card.Actions>
         </Card>
       </TouchableOpacity>
       )}
@@ -134,6 +146,10 @@ const styles = StyleSheet.create({
   },
   value: {
     fontSize: 18,
+  },
+  removeButton: {
+    backgroundColor: 'red',
+    marginRight: 10,
   },
   searchInputContainer: {
     position: 'absolute',
