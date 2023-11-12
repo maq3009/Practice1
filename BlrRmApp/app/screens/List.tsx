@@ -1,14 +1,18 @@
 import React from 'react';
 import { View, Text, TextInput, FlatList, Button, StyleSheet } from 'react-native';
 import { useState } from 'react';
-import { FIRESTORE_DB } from '../../firebaseConfig';
+import { FIRESTORE_DB, storage } from '../../firebaseConfig';
 import { addDoc, collection, getDocs, query } from 'firebase/firestore';
 import UploadComponent from './UploadComponent';
 import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+} from 'firebase/storage';
 
-
-const imgDir = FileSystem.documentDirectory + '../../assets';
+const imgDir = `${FileSystem.documentDirectory}assets/`;
 
 
 const ensureDirExists = async () => {
@@ -36,7 +40,7 @@ const List = ({ navigation }: any) => {
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         aspect: [4, 3],
-        quality: 0.3,
+        quality: 0.1,
       }
 
       if(useLibrary) {
@@ -48,9 +52,19 @@ const List = ({ navigation }: any) => {
       }
 
       if (!result.canceled) {
-        setImage(result.assets[0].uri);
+        const filename = result.assets[0].uri.split('/').pop(); // Define filename here
+        const response = await fetch(result.assets[0].uri);
+        const blob = await response.blob();
+
+        const storageRef = ref(storage, `images/${filename}`);
+        const uploadTask = uploadBytes(storageRef, blob);
+
+        uploadTask.then(async () => {
+          const downloadURL = await getDownloadURL(storageRef);
+          setImage(downloadURL);
+        });
       }
-    }
+    };
 
 
 
@@ -65,7 +79,7 @@ const List = ({ navigation }: any) => {
       Location, 
       Manufacturer,
       Quantity,
-      Image
+      Image: Image
     });
 
     // Clear input fields after adding the part
