@@ -10,12 +10,20 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { color } from 'react-native-elements/dist/helpers';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
+import { onAuthStateChanged, User } from 'firebase/auth';
+import { useState, useEffect } from 'react';
+import {FIREBASE_AUTH} from './firebaseConfig';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator()
 
-const MainStack = () => {
+type MainStackProps = {
+  isLoggedIn: boolean;
+}
+
+
+
+const MainStack: React.FC<MainStackProps> = ({ isLoggedIn }) => {
   return (
       <Stack.Navigator initialRouteName= 'Login'>
         <Stack.Screen name="Login/SignUp" 
@@ -31,10 +39,26 @@ const MainStack = () => {
   )}
 
 export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(FIREBASE_AUTH, (user: User | null) => {
+      if (user) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
+
+
   return (
     <NavigationContainer>
       <Tab.Navigator>
-        <Tab.Screen name='Home'
+        <Tab.Screen 
+          name='Home'
           options={{
             headerTitleAlign: 'center',
             headerTitleStyle: {
@@ -42,9 +66,16 @@ export default function App() {
             },
             tabBarIcon: ({ color, size }) => (
               <Icon name="home" color={color} size={size} />
-            )
+            ),
         }}
-         component={MainStack} />
+        >
+          {() => <MainStack isLoggedIn={isLoggedIn} />}
+           </Tab.Screen>
+
+        {isLoggedIn && (
+          <>
+
+
         <Tab.Screen name="Add New Part" component={List} 
           options={{
             headerTitleAlign: "center",
@@ -72,6 +103,8 @@ export default function App() {
             )
           }}
         />
+        </>
+        )}
       </Tab.Navigator>
     </NavigationContainer>
   )

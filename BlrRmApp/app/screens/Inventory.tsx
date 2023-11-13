@@ -7,6 +7,7 @@ import { black } from 'react-native-paper/lib/typescript/styles/themes/v2/colors
 import { ScreenStackHeaderSearchBarView } from 'react-native-screens';
 import Search from '../../components/Search';
 import { StatusBar } from 'react-native';
+import LogoutButton from '../screens/LogoutButton';
 
 
 interface InventoryItem {
@@ -52,6 +53,7 @@ const Inventory: React.FC = () => {
 
   return (
     <View style={styles.container}>
+      <LogoutButton />
       <View style={styles.searchInputContainer}>
         <Search setSearchTerm={setSearchTerm} />
       </View>

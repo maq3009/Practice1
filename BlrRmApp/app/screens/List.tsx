@@ -11,6 +11,9 @@ import {
   uploadBytes,
   getDownloadURL,
 } from 'firebase/storage';
+import LogoutButton from '../screens/LogoutButton';
+
+
 
 const imgDir = `${FileSystem.documentDirectory}assets/`;
 
@@ -93,6 +96,7 @@ const List = ({ navigation }: any) => {
 
   return (
     <View style={styles.container}>
+      <LogoutButton />
       <View>
         <Text style={styles.TopText}>ADD PART</Text>
         <TextInput

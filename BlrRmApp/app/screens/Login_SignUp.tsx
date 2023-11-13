@@ -14,7 +14,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 type StackParamList = {
   Login: undefined;
   List: undefined ;
-}
+};
 
 type LoginScreenNavigationProp = StackNavigationProp<StackParamList, 'Login'>;
 

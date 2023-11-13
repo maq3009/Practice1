@@ -10,6 +10,7 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 import { Card, Button } from 'react-native-paper';
+import LogoutButton from './LogoutButton';
 
 interface ChemicalItem {
   id: string;
@@ -51,6 +52,7 @@ const Chemicals: React.FC = () => {
 
   return (
     <View style={styles.container}>
+      <LogoutButton/>
       <FlatList
         data={chemicalsData}
         numColumns={2}

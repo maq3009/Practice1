@@ -14,6 +14,7 @@ import {
 import { Card, Button } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import { white } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
+import LogoutButton from './LogoutButton';
 
 
 
@@ -165,6 +166,7 @@ const Chemicals: React.FC = () => {
 
   return (
     <View style={styles.container}>
+      <LogoutButton />
       <FlatList
         data={chemicalsData}
         numColumns={2}

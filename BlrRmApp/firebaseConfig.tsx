@@ -1,7 +1,10 @@
-import { initializeApp } from 'firebase/app';
-// import { getAuth, initializeAuth } from 'firebase/auth';
+import { initializeApp, FirebaseApp } from 'firebase/app';
+import { initializeAuth, User } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
+import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
+
+
 
 //My Database Configuration
 
@@ -15,10 +18,20 @@ const firebaseConfig = {
     measurementId: "G-NDJMQFYQ80"
 };
 
+
+
+
 // initialize Firebase
 
-export const FIREBASE_APP = initializeApp(firebaseConfig);
-export const FIRESTORE_DB = getFirestore(FIREBASE_APP);
-// export const FIREBASE_AUTH = getAuth(FIREBASE_APP);
-// export const auth = initializeAuth(FIREBASE_APP);
-export const storage = getStorage(FIREBASE_APP);
+const firebaseApp: FirebaseApp = initializeApp(firebaseConfig);
+const firestore = getFirestore(firebaseApp);
+
+const auth = initializeAuth(firebaseApp)
+
+
+
+// Export necessary modules
+export const FIREBASE_APP = firebaseApp;
+export const FIRESTORE_DB = firestore;
+export const FIREBASE_AUTH = auth;
+export const storage = getStorage(firebaseApp);
